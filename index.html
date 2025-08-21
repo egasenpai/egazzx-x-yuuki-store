@@ -31,6 +31,7 @@ header{
   -webkit-background-clip:text; -webkit-text-fill-color:transparent;
   text-shadow: 0 0 12px rgba(155,92,255,.45), 0 0 18px rgba(255,77,190,.35);
 }
+
 .cta{display:flex;justify-content:center;gap:10px;margin:18px 12px 8px;}
 .btn{
   background: linear-gradient(135deg, var(--neon), #6fffe1);
@@ -53,35 +54,41 @@ header{
   border:1px solid rgba(255,255,255,.12);
   box-shadow: 0 8px 24px rgba(0,0,0,.35);
   transition:.25s;
+  position: relative;
 }
 .card:hover{
   transform: translateY(-6px);
-  box-shadow: 0 10px 30px rgba(155,92,255,.25), 0 0 24px rgba(255,77,190,.15);
+  box-shadow: 0 0 20px rgba(0,255,224,.5),0 0 28px rgba(155,92,255,.25);
 }
 .title{font-size:16px;font-weight:700;margin-bottom:6px;}
 .specs{font-size:13px;margin-bottom:8px;opacity:.9;line-height:1.4;}
 .price{opacity:.95;margin-bottom:12px;}
-.wa{
+.wa, .remove-btn{
   width:100%; padding:10px; border:none; border-radius:10px; font-weight:700; cursor:pointer;
-  background: linear-gradient(135deg,#25D366,#3ae38a); color:#001b0c;
-  box-shadow: 0 0 14px rgba(37,211,102,.45);
+}
+.wa{
+  background: linear-gradient(135deg,#25D366,#3ae38a); color:#001b0c; box-shadow: 0 0 14px rgba(37,211,102,.45);
 }
 .wa:hover{ transform:translateY(-2px); }
+.remove-btn{
+  background:#ff4d6d; color:#fff; margin-top:6px; box-shadow:0 0 12px rgba(255,77,109,.4);
+}
+.remove-btn:hover{ transform:translateY(-2px); }
 
-#musicBtn{
-  position:fixed; right:16px; bottom:18px; z-index:5;
-  width:52px; height:52px; border-radius:50%; border:none; cursor:pointer;
-  background: radial-gradient(circle at 30% 30%, var(--pink), var(--violet));
-  color:white; font-size:1.2rem; box-shadow:0 0 18px rgba(155,92,255,.55);
-}
+/* Keranjang popup */
 .cart-popup{
-  position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
-  background:rgba(0,0,0,0.85); padding:18px; border-radius:14px;
-  display:none; width:90%; max-width:320px; z-index:10;
+  position:fixed; bottom:-100%; left:50%; transform:translateX(-50%);
+  background:rgba(0,0,0,0.95); padding:16px; border-radius:14px;
+  width:90%; max-width:360px; z-index:10;
+  transition:bottom .35s ease;
 }
-.cart-popup h3{margin-bottom:12px;text-align:center;}
-.cart-item{margin-bottom:10px;font-size:14px;}
-.close-cart{background:#ff4d6d;color:#fff;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;width:100%;}
+.cart-popup.show{ bottom:18px; }
+.cart-popup h3{text-align:center;margin-bottom:12px;}
+.cart-item{margin-bottom:10px;font-size:14px;display:flex;justify-content:space-between;align-items:center;}
+.checkout-btn{
+  width:100%; padding:10px; border:none; border-radius:8px; background:#ff4dbe; color:#fff; cursor:pointer; font-weight:700;
+}
+.checkout-btn:hover{opacity:.9;}
 
 /* Gallery */
 .gallery{
@@ -133,6 +140,14 @@ header{
   transform: translateY(-4px);
   box-shadow: 0 12px 28px rgba(155,92,255,.25);
 }
+
+/* Musik */
+#musicBtn{
+  position:fixed; right:16px; bottom:18px; z-index:5;
+  width:52px; height:52px; border-radius:50%; border:none; cursor:pointer;
+  background: radial-gradient(circle at 30% 30%, var(--pink), var(--violet));
+  color:white; font-size:1.2rem; box-shadow:0 0 18px rgba(155,92,255,.55);
+}
 </style>
 </head>
 <body>
@@ -146,22 +161,22 @@ header{
 </div>
 
 <section class="grid" id="productList">
-  <!-- Panel 1GB sampai 10GB -->
-  <div class="card"><div class="title">Panel 1GB</div><div class="specs">RAM: 1GB<br>CPU: 1 Core<br>Disk: 10GB</div><div class="price">Rp 1.000</div><button class="wa" onclick="addCart('Panel 1GB - 1GB RAM / 1 Core CPU / 10GB Disk',1000)">Tambah ke Keranjang</button></div>
-  <div class="card"><div class="title">Panel 2GB</div><div class="specs">RAM: 2GB<br>CPU: 2 Core<br>Disk: 20GB</div><div class="price">Rp 2.000</div><button class="wa" onclick="addCart('Panel 2GB - 2GB RAM / 2 Core CPU / 20GB Disk',2000)">Tambah ke Keranjang</button></div>
-  <div class="card"><div class="title">Panel 3GB</div><div class="specs">RAM: 3GB<br>CPU: 3 Core<br>Disk: 30GB</div><div class="price">Rp 3.000</div><button class="wa" onclick="addCart('Panel 3GB - 3GB RAM / 3 Core CPU / 30GB Disk',3000)">Tambah ke Keranjang</button></div>
-  <div class="card"><div class="title">Panel 4GB</div><div class="specs">RAM: 4GB<br>CPU: 4 Core<br>Disk: 40GB</div><div class="price">Rp 4.000</div><button class="wa" onclick="addCart('Panel 4GB - 4GB RAM / 4 Core CPU / 40GB Disk',4000)">Tambah ke Keranjang</button></div>
-  <div class="card"><div class="title">Panel 5GB</div><div class="specs">RAM: 5GB<br>CPU: 5 Core<br>Disk: 50GB</div><div class="price">Rp 5.000</div><button class="wa" onclick="addCart('Panel 5GB - 5GB RAM / 5 Core CPU / 50GB Disk',5000)">Tambah ke Keranjang</button></div>
-  <div class="card"><div class="title">Panel 6GB</div><div class="specs">RAM: 6GB<br>CPU: 6 Core<br>Disk: 60GB</div><div class="price">Rp 6.000</div><button class="wa" onclick="addCart('Panel 6GB - 6GB RAM / 6 Core CPU / 60GB Disk',6000)">Tambah ke Keranjang</button></div>
-  <div class="card"><div class="title">Panel 7GB</div><div class="specs">RAM: 7GB<br>CPU: 7 Core<br>Disk: 70GB</div><div class="price">Rp 7.000</div><button class="wa" onclick="addCart('Panel 7GB - 7GB RAM / 7 Core CPU / 70GB Disk',7000)">Tambah ke Keranjang</button></div>
-  <div class="card"><div class="title">Panel 8GB</div><div class="specs">RAM: 8GB<br>CPU: 8 Core<br>Disk: 80GB</div><div class="price">Rp 8.000</div><button class="wa" onclick="addCart('Panel 8GB - 8GB RAM / 8 Core CPU / 80GB Disk',8000)">Tambah ke Keranjang</button></div>
-  <div class="card"><div class="title">Panel 9GB</div><div class="specs">RAM: 9GB<br>CPU: 9 Core<br>Disk: 90GB</div><div class="price">Rp 9.000</div><button class="wa" onclick="addCart('Panel 9GB - 9GB RAM / 9 Core CPU / 90GB Disk',9000)">Tambah ke Keranjang</button></div>
-  <div class="card"><div class="title">Panel 10GB</div><div class="specs">RAM: 10GB<br>CPU: 10 Core<br>Disk: 100GB</div><div class="price">Rp 10.000</div><button class="wa" onclick="addCart('Panel 10GB - 10GB RAM / 10 Core CPU / 100GB Disk',10000)">Tambah ke Keranjang</button></div>
-  <!-- Panel Unlimited -->
-  <div class="card"><div class="title">Panel Unlimited</div><div class="specs">RAM: ∞<br>CPU: ∞<br>Disk: ∞</div><div class="price">Rp 15.000</div><button class="wa" onclick="addCart('Panel Unlimited - RAM ∞ / CPU ∞ / Disk ∞',15000)">Tambah ke Keranjang</button></div>
+  <!-- Panel contoh, tambahkan 1GB sampai 10GB + Unlimited -->
+  <div class="card">
+    <div class="title">Panel 1GB</div>
+    <div class="specs">RAM: 1GB<br>CPU: 1 Core<br>Disk: 10GB</div>
+    <div class="price">Rp 1.000</div>
+    <button class="wa" onclick="addCart('Panel 1GB - 1GB RAM / 1 Core CPU / 10GB Disk',1000)">Tambah ke Keranjang</button>
+  </div>
+  <div class="card">
+    <div class="title">Panel Unlimited</div>
+    <div class="specs">RAM: ∞<br>CPU: ∞<br>Disk: ∞</div>
+    <div class="price">Rp 15.000</div>
+    <button class="wa" onclick="addCart('Panel Unlimited - RAM ∞ / CPU ∞ / Disk ∞',15000)">Tambah ke Keranjang</button>
+  </div>
 </section>
 
-<!-- Gallery Section -->
+<!-- Gallery -->
 <section class="gallery">
   <div class="img-card"><img src="https://files.catbox.moe/3jnb5z.jpeg" alt="Gallery 1"></div>
   <div class="img-card"><img src="https://files.catbox.moe/32dpue.jpeg" alt="Gallery 2"></div>
@@ -169,21 +184,19 @@ header{
   <div class="img-card"><img src="https://files.catbox.moe/fihjrg.jpeg" alt="Gallery 4"></div>
 </section>
 
-<!-- Bio Section -->
+<!-- Bio -->
 <section class="bio">
   <div class="bio-card">
     <h3>Halo! Aku Ega 😎</h3>
-    <p>Selamat datang di <strong>Egazzx X Yuuki Store</strong>! Aku jual panel internet cepat dan murah untuk semua kebutuhanmu.  
-       Di sini kamu bisa pilih panel 1GB sampai Unlimited, tinggal klik & langsung order via WhatsApp.  
-       Santai, aman, dan cepat! 💜</p>
+    <p>Selamat datang di <strong>Egazzx X Yuuki Store</strong>! Pilih panel favoritmu, satu per tipe. Klik “Batal” jika berubah pikiran, atau “Pesan via WA” untuk order otomatis ke Ega. Santai, aman, cepat! 💜</p>
   </div>
 </section>
 
-<!-- Keranjang popup -->
+<!-- Keranjang -->
 <div class="cart-popup" id="cartPopup">
 <h3>Keranjang Belanja</h3>
 <div id="cartItems"></div>
-<button class="close-cart" onclick="checkoutCart()">Pesan via WA</button>
+<button class="checkout-btn" onclick="checkoutCart()">Pesan via WA</button>
 </div>
 
 <!-- Musik -->
@@ -193,7 +206,7 @@ header{
 <button id="musicBtn" onclick="toggleMusic()">🎵</button>
 
 <script>
-let listVisible=false,musicStarted=false;
+let listVisible=false, musicStarted=false;
 const music=document.getElementById('bgMusic');
 let cart=[];
 
@@ -209,7 +222,12 @@ function toggleProducts(){
   listVisible=!listVisible;
 }
 
+// Keranjang
 function addCart(name,price){
+  if(cart.find(i=>i.name===name)){
+    alert('Item ini sudah ada di keranjang!');
+    return;
+  }
   cart.push({name,price});
   showCart();
 }
@@ -218,16 +236,24 @@ function showCart(){
   const popup=document.getElementById('cartPopup');
   const items=document.getElementById('cartItems');
   items.innerHTML='';
-  cart.forEach((i,idx)=>{items.innerHTML+=`<div class="cart-item">${i.name} - Rp ${i.price.toLocaleString('id-ID')}</div>`;});
-  popup.style.display='block';
+  cart.forEach((i,idx)=>{
+    items.innerHTML+=`<div class="cart-item">${i.name} - Rp ${i.price.toLocaleString('id-ID')} <button class="remove-btn" onclick="removeCart(${idx})">Batal</button></div>`;
+  });
+  popup.classList.toggle('show', cart.length>0);
+}
+
+function removeCart(idx){
+  cart.splice(idx,1);
+  showCart();
 }
 
 function checkoutCart(){
-  if(cart.length===0){ alert('Keranjang kosong'); return; }
+  if(cart.length===0){ alert('Keranjang kosong!'); return; }
   let msg='Bang aku mau beli panel:\n';
   cart.forEach(i=>{ msg+=`- ${i.name} Rp ${i.price.toLocaleString('id-ID')}\n`; });
   const num='6285166370226';
   window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`,'_blank');
+  cart=[]; showCart();
 }
 </script>
 </body>
