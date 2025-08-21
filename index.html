@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Egazzx X Yuuki Store</title>
+<style>
+/* FONT + THEME */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap');
+:root{
+  --bg:#07070a; --card: rgba(255,255,255,0.04); --muted: rgba(255,255,255,0.08);
+  --accent1:#9b5cff; --accent2:#ff4dbe; --neon:#00ffe0; --success:#2ecc71; --danger:#ff5c78;
+  --radius:14px; --maxw:980px;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;font-family:"Poppins",system-ui,Roboto,Arial;background:var(--bg);color:#fff;
+  -webkit-font-smoothing:antialiased;line-height:1.4;
+}
+
+/* BACKGROUND */
+.bg{position:fixed;inset:0;z-index:-3;background-image:url('https://files.catbox.moe/y2taqp.png');background-size:cover;background-position:center;filter:brightness(.55) saturate(.98);}
+.overlay{position:fixed;inset:0;z-index:-2;background:linear-gradient(180deg,rgba(3,3,6,.35),rgba(3,3,6,.6));backdrop-filter: blur(2px);}
+
+/* CONTAINER */
+.container{max-width:var(--maxw);margin:0 auto;padding:16px}
+.header{display:flex;align-items:center;gap:12px;justify-content:space-between;padding:12px 0}
+.logo{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:18px}
+.h-title{font-weight:800;font-size:20px;color:transparent;background:linear-gradient(90deg,var(--accent1),var(--accent2));-webkit-background-clip:text}
+.hero{text-align:center;margin:12px 0 18px}
+
+/* CONTROLS */
+.controls{display:flex;gap:10px;justify-content:center;margin:12px 0}
+.btn{padding:10px 16px;border-radius:12px;border:none;font-weight:700;cursor:pointer;background:linear-gradient(135deg,var(--neon),#6fffe1);color:#00221f}
+
+/* GRID & CARD */
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));margin-bottom:18px}
+.card{background:var(--card);border-radius:var(--radius);padding:14px;border:1px solid var(--muted);box-shadow:0 6px 18px rgba(0,0,0,.55);transition:transform .12s,box-shadow .12s;backdrop-filter:blur(6px)}
+.card:hover{transform:translateY(-6px);box-shadow:0 18px 48px rgba(0,0,0,.6)}
+.title{font-weight:800;margin-bottom:8px}
+.specs{font-size:13px;color:rgba(255,255,255,.9);margin-bottom:10px}
+.price{font-weight:800;margin-bottom:10px}
+.actions{display:flex;gap:8px;flex-direction:column}
+.action-btn{width:100%;padding:10px;border-radius:10px;border:none;font-weight:800;cursor:pointer}
+.action-wa{background:linear-gradient(135deg,#25D366,#2ecc71);color:#001b0c}
+.action-tg{background:linear-gradient(135deg,#0088cc,#00a3ff);color:#fff}
+.action-switch{background:linear-gradient(135deg,#8a76ff,#6a5cff);color:#fff}
+
+/* GALLERY & BIO */
+.gallery{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));margin:14px 0}
+.img-card{border-radius:12px;overflow:hidden;border:1px solid var(--muted);background:#0e0e10}
+.img-card img{width:100%;height:auto;display:block}
+.bio{margin:18px 0;padding:14px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01));border:1px solid var(--muted)}
+
+/* CART FAB + BADGE */
+.cart-fab{position:fixed;right:16px;bottom:18px;width:62px;height:62px;border-radius:999px;background:linear-gradient(135deg,var(--accent2),var(--accent1));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:22px;z-index:70;box-shadow:0 18px 40px rgba(155,92,255,.18);cursor:pointer}
+.cart-badge{position:absolute;top:-6px;right:-6px;background:var(--danger);color:#fff;border-radius:999px;padding:6px 8px;font-weight:800;font-size:12px}
+
+/* SHEET */
+.sheet{position:fixed;left:50%;transform:translateX(-50%);bottom:-100%;width:94%;max-width:480px;background:linear-gradient(180deg,#0a0a0a,#060606);border-radius:14px;padding:12px;box-shadow:0 30px 90px rgba(0,0,0,.6);transition:bottom .36s ease;z-index:80}
+.sheet.show{bottom:18px}
+.sheet .items{max-height:300px;overflow:auto;padding-right:6px}
+.sheet .item{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:10px;margin-bottom:8px;background:rgba(255,255,255,0.02)}
+.sheet .remove{background:transparent;border:none;color:var(--danger);font-weight:900;font-size:18px;cursor:pointer;padding:6px 8px;border-radius:8px}
+.sheet .checkout{display:flex;gap:8px;margin-top:8px}
+
+/* SWITCH MODAL */
+.modal-back{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.45);backdrop-filter:blur(2px);z-index:90;padding:18px}
+.modal-back.show{display:flex}
+.switch-modal{max-width:920px;width:100%;background:linear-gradient(180deg,#07070a,#0b0b0d);border-radius:12px;padding:12px;border:1px solid var(--muted);box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.switch-grid{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));max-height:60vh;overflow:auto;padding:6px}
+.scard{padding:10px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03);display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;transition:transform .12s ease}
+.scard:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(0,0,0,.5)}
+
+/* TOAST */
+.toast-wrap{position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:10px;align-items:center}
+.toast{min-width:260px;max-width:92%;padding:12px 14px;border-radius:12px;background:linear-gradient(180deg,#0b0b0d,#0d0d0f);box-shadow:0 18px 40px rgba(0,0,0,.6);display:flex;gap:10px;align-items:center;opacity:0;transform:translateY(-8px);transition:opacity .25s,transform .25s}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast .ico{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900}
+.toast.success .ico{background:linear-gradient(135deg,#2ecc71,#25D366);color:#02221a}
+.toast.error .ico{background:linear-gradient(135deg,#ff7b9b,#ff4d6d);color:#3a0206}
+
+/* SEARCH + CONFIRM */
+.search-row{display:flex;gap:8px;justify-content:center;margin-bottom:12px}
+.search-input{width:100%;max-width:520px;padding:10px;border-radius:12px;border:1px solid var(--muted);background:rgba(255,255,255,0.02);color:#fff;font-weight:600}
+.order-confirm{max-width:420px;background:linear-gradient(180deg,#070707,#0b0b0b);padding:14px;border-radius:12px;border:1px solid var(--muted)}
+.small{font-size:13px;opacity:.9}
+
+/* AI CHAT WIDGET (position adjustments) */
+.chat-fab{position:fixed;right:16px;bottom:146px;z-index:120;width:56px;height:56px;border-radius:999px;background:linear-gradient(135deg,#ff7bd1,#9b5cff);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 18px 40px rgba(155,92,255,.18);cursor:pointer}
+.chat-panel{position:fixed;right:16px;bottom:72px;z-index:125;width:92%;max-width:360px;height:56vh;background:linear-gradient(180deg, rgba(6,6,8,0.98), rgba(8,8,10,0.98));border-radius:14px;box-shadow:0 30px 80px rgba(0,0,0,.6);display:flex;flex-direction:column;overflow:hidden}
+.chat-header{padding:12px;border-bottom:1px solid rgba(255,255,255,0.03);display:flex;align-items:center;gap:10px}
+.chat-body{padding:10px;flex:1;overflow:auto;display:flex;flex-direction:column;gap:8px;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent)}
+.msg{max-width:84%;padding:8px 10px;border-radius:10px;line-height:1.3}
+.msg.user{align-self:flex-end;background:linear-gradient(135deg,#25D366,#2ecc71);color:#052016}
+.msg.bot{align-self:flex-start;background:rgba(255,255,255,0.04);color:#fff;border:1px solid rgba(255,255,255,0.03)}
+.chat-input{display:flex;gap:8px;padding:10px;border-top:1px solid rgba(255,255,255,0.03);background:transparent}
+.chat-input input{flex:1;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);color:#fff}
+.chat-input button{padding:10px 12px;border-radius:10px;border:none;background:linear-gradient(135deg,#9b5cff,#ff4dbe);color:#fff;font-weight:700;cursor:pointer}
+.quick-row{display:flex;gap:8px;flex-wrap:wrap;padding:8px}
+.quick-btn{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.03);padding:6px 8px;border-radius:999px;font-weight:700;cursor:pointer}
+
+@media(min-width:900px){.container{padding:22px}}
+</style>
+</head>
+<body>
+<div class="bg"></div><div class="overlay"></div>
+
+<div class="container">
+  <header class="header">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="logo">E×Y</div>
+      <div>
+        <div class="h-title">Egazzx X Yuuki Store</div>
+        <div style="font-size:12px;color:rgba(255,255,255,.7)">Panel cepat & murah — WA / Telegram order</div>
+      </div>
+    </div>
+    <div><span style="background:rgba(255,255,255,0.04);padding:6px 10px;border-radius:999px;font-weight:700">Online</span></div>
+  </header>
+
+  <section class="hero">
+    <div class="lead" style="font-weight:800">Panel 1GB — 10GB & Unlimited • Pilih satu per tipe</div>
+    <div class="sub small">Ketuk "Ganti ke..." untuk pilih panel lain, atau langsung chat kalau mau tanya.</div>
+  </section>
+
+  <div class="controls">
+    <button class="btn" id="toggleBtn">📦 Lihat List Panel</button>
+  </div>
+
+  <div class="search-row">
+    <input id="searchInput" class="search-input" placeholder="Cari panel (contoh: 1GB atau unlimited)..." />
+  </div>
+
+  <section class="grid" id="productList" aria-live="polite"></section>
+
+  <section class="gallery" aria-label="Gallery">
+    <div class="img-card"><img loading="lazy" src="https://files.catbox.moe/3jnb5z.jpeg" alt="Gambar 1"></div>
+    <div class="img-card"><img loading="lazy" src="https://files.catbox.moe/32dpue.jpeg" alt="Gambar 2"></div>
+    <div class="img-card"><img loading="lazy" src="https://files.catbox.moe/ysop95.jpeg" alt="Gambar 3"></div>
+    <div class="img-card"><img loading="lazy" src="https://files.catbox.moe/fihjrg.jpeg" alt="Gambar 4"></div>
+  </section>
+
+  <section class="bio"><div class="order-confirm">
+    <h4>Halo! Aku Ega 😎</h4>
+    <p class="small">Selamat datang di <strong>Egazzx X Yuuki Store</strong>. Pilih panelmu — satu per tipe. Ganti atau batal kapan saja. Pesan via WhatsApp / Telegram langsung otomatis.</p>
+  </div></section>
+</div>
+
+<button class="cart-fab" id="cartFab" title="Keranjang">🛒<span class="cart-badge" id="cartCount" style="display:none">0</span></button>
+
+<div class="sheet" id="cartSheet" aria-hidden="true">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><strong>Keranjang Belanja</strong><button onclick="closeSheet()" style="background:transparent;border:none;color:#fff;font-size:20px;cursor:pointer">✖</button></div>
+  <div class="items" id="cartItems"></div>
+  <div class="checkout">
+    <button class="btn" onclick="openConfirm('wa')" style="background:linear-gradient(135deg,#25D366,#2ecc71);color:#001b0c">Pesan via WA</button>
+    <button class="btn" onclick="openConfirm('tg')" style="background:linear-gradient(135deg,#0088cc,#00a3ff)">Pesan via Telegram</button>
+  </div>
+</div>
+
+<div class="modal-back" id="modalBack">
+  <div class="switch-modal">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <strong>Pilih panel pengganti</strong>
+      <button onclick="closeModal()" style="background:transparent;border:none;color:#fff;font-size:20px;cursor:pointer">✖</button>
+    </div>
+    <div class="switch-grid" id="switchGrid"></div>
+    <div style="margin-top:8px"><button class="btn" onclick="closeModal()">Batal</button></div>
+  </div>
+</div>
+
+<!-- confirm modal -->
+<div class="modal-back" id="confirmBack" style="display:none">
+  <div style="max-width:420px;width:100%;background:linear-gradient(180deg,#070707,#0b0b0b);padding:14px;border-radius:12px;border:1px solid var(--muted);box-shadow:0 30px 80px rgba(0,0,0,.6)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><strong>Konfirmasi Pesanan</strong><button onclick="closeConfirm()" style="background:transparent;border:none;color:#fff;font-size:20px;cursor:pointer">✖</button></div>
+    <div id="confirmSummary" style="margin-bottom:8px"></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn" onclick="confirmAndSend()" style="flex:1;background:linear-gradient(135deg,#25D366,#2ecc71);color:#001b0c">Konfirmasi & Kirim</button>
+      <button class="btn" onclick="closeConfirm()" style="flex:1">Batal</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toastWrap" aria-hidden="true"></div>
+
+<button class="mask-tg" onclick="openTGQuick()" style="position:fixed;left:16px;bottom:18px;width:52px;height:52px;border-radius:999px;background:linear-gradient(45deg,#00a3ff,#006bb3);display:flex;align-items:center;justify-content:center;border:none;z-index:70;box-shadow:0 16px 36px rgba(0,100,200,.12);font-size:18px">✈</button>
+
+<audio id="bgMusic" loop preload="none"><source src="https://files.catbox.moe/dmiea0.mp3" type="audio/mpeg"></audio>
+<button id="musicBtn" onclick="toggleMusic()" style="position:fixed;right:16px;bottom:86px;width:48px;height:48px;border-radius:12px;background:linear-gradient(45deg,#ff7bd1,#9b5cff);border:none;z-index:70;color:#fff;font-size:18px">🎵</button>
+
+<!-- AI Chat FAB + Panel (will be toggled by JS) -->
+<button id="chatFabBtn" class="chat-fab" title="Chat AI">💬</button>
+<div id="chatPanel" class="chat-panel" style="display:none" role="dialog" aria-label="Chat AI">
+  <div class="chat-header">
+    <div style="display:flex;flex-direction:column">
+      <div class="chat-title">Yuuki AI — Egazzx Store</div>
+      <div id="chatStatus" style="font-size:12px;color:rgba(255,255,255,0.7)">Siap membantu — coba ketik "harga 1GB".</div>
+    </div>
+    <div style="margin-left:auto"><button onclick="closeChatPanel()" style="background:transparent;border:none;color:#fff;font-weight:800;cursor:pointer">✖</button></div>
+  </div>
+  <div class="chat-body" id="chatBody"></div>
+  <div style="padding:8px;border-top:1px solid rgba(255,255,255,0.03);">
+    <div class="quick-row" id="quickRow">
+      <button class="quick-btn" onclick="sendQuick('Harga 1GB')">Harga 1GB</button>
+      <button class="quick-btn" onclick="sendQuick('Unlimited')">Unlimited</button>
+      <button class="quick-btn" onclick="sendQuick('Cara beli')">Cara beli</button>
+      <button class="quick-btn" onclick="sendQuick('Buka keranjang')">Buka keranjang</button>
+    </div>
+    <div class="chat-input">
+      <input id="chatInput" placeholder="Tulis pesan..." aria-label="Tulis pesan"/>
+      <button id="chatSendBtn">Kirim</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =======================
+   MAIN SITE SCRIPT
+   - products, search, cart persistence, modal, checkout
+   ======================= */
+const panels = [
+  ['Panel 1GB','1GB','1 Core','10GB',1000],
+  ['Panel 2GB','2GB','2 Core','20GB',2000],
+  ['Panel 3GB','3GB','3 Core','30GB',3000],
+  ['Panel 4GB','4GB','4 Core','40GB',4000],
+  ['Panel 5GB','5GB','5 Core','50GB',5000],
+  ['Panel 6GB','6GB','6 Core','60GB',6000],
+  ['Panel 7GB','7GB','7 Core','70GB',7000],
+  ['Panel 8GB','8GB','8 Core','80GB',8000],
+  ['Panel 9GB','9GB','9 Core','90GB',9000],
+  ['Panel 10GB','10GB','10 Core','100GB',10000],
+  ['Panel Unlimited','∞','∞','∞',15000]
+];
+
+const productList = document.getElementById('productList');
+const switchGrid = document.getElementById('switchGrid');
+const modalBack = document.getElementById('modalBack');
+const toastWrap = document.getElementById('toastWrap');
+const cartFab = document.getElementById('cartFab');
+const cartCount = document.getElementById('cartCount');
+const cartSheet = document.getElementById('cartSheet');
+const cartItemsEl = document.getElementById('cartItems');
+const bgMusic = document.getElementById('bgMusic');
+const searchInput = document.getElementById('searchInput');
+const confirmBack = document.getElementById('confirmBack');
+const confirmSummary = document.getElementById('confirmSummary');
+
+let cart = [];
+let musicStarted = false;
+let pendingCheckoutMethod = null;
+
+/* render products with optional filter */
+function renderProducts(filter='') {
+  productList.innerHTML = '';
+  const q = (filter||'').toLowerCase().trim();
+  panels.forEach((p, idx)=>{
+    const [name, ram, cpu, disk, price] = p;
+    const combined = `${name} ${ram} ${cpu} ${disk} ${price}`.toLowerCase();
+    if(q && !combined.includes(q)) return;
+    const card = document.createElement('article');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="title">${name}</div>
+      <div class="specs">RAM: ${ram}<br>CPU: ${cpu}<br>Disk: ${disk}</div>
+      <div class="price">Rp ${price.toLocaleString('id-ID')}</div>
+      <div class="actions">
+        <button class="action-btn action-wa">Tambah ke Keranjang</button>
+        <button class="action-btn action-tg">Chat via Telegram</button>
+      </div>
+      <div style="margin-top:8px"><button class="action-btn action-switch">Ganti ke...</button></div>
+    `;
+    const btnAdd = card.querySelector('.action-wa');
+    const btnTg = card.querySelector('.action-tg');
+    const btnSwitch = card.querySelector('.action-switch');
+    btnAdd.addEventListener('click', ()=> addToCart(name,price,ram,cpu,disk));
+    btnTg.addEventListener('click', ()=> quickTG(name,price));
+    btnSwitch.addEventListener('click', ()=> openSwitch(idx));
+    productList.appendChild(card);
+  });
+}
+renderProducts('');
+
+/* SEARCH */
+searchInput.addEventListener('input', (e)=> renderProducts(e.target.value));
+
+/* TOAST */
+function toast(msg,type='success',actionLabel=null,actionFn=null,timeout=3500){
+  const t=document.createElement('div'); t.className='toast';
+  if(type==='error') t.classList.add('error'); else t.classList.add('success');
+  t.innerHTML = `<div class="ico">${type==='error'?'!':'✓'}</div><div class="text">${msg}</div>`;
+  if(actionLabel && actionFn){
+    const a=document.createElement('button'); a.className='action'; a.textContent=actionLabel;
+    a.style.background = type==='error' ? 'var(--danger)' : 'var(--success)';
+    a.onclick = ()=> { try{ actionFn(); } catch{}; removeToast(t); };
+    t.appendChild(a);
+  }
+  toastWrap.appendChild(t);
+  requestAnimationFrame(()=> t.classList.add('show'));
+  const id = setTimeout(()=> removeToast(t), timeout);
+  t.addEventListener('click', ()=> { clearTimeout(id); removeToast(t); });
+}
+function removeToast(el){ if(!el) return; el.classList.remove('show'); setTimeout(()=> el.remove(),220); }
+
+/* CART persistence */
+function saveCart(){ try{ localStorage.setItem('egazzx_cart_v1', JSON.stringify(cart)); }catch(e){} }
+function loadCart(){ try{ const raw = localStorage.getItem('egazzx_cart_v1'); if(raw){ cart = JSON.parse(raw); updateCartUI(); } }catch(e){} }
+loadCart();
+
+/* CART logic */
+function addToCart(name,price,ram,cpu,disk){
+  if(!musicStarted){ try{ bgMusic.play(); musicStarted=true;}catch(e){} }
+  const base = name.split(' - ')[0];
+  if(cart.find(i => i.base === base)){
+    toast('Item sudah ada di keranjang!','error','Buka Keranjang',()=> openSheet(),5000);
+    cartFab.animate([{transform:'scale(1)'},{transform:'scale(1.06)'},{transform:'scale(1)'}],{duration:420});
+    return;
+  }
+  cart.push({ base, name:`${name} - ${ram} RAM / ${cpu} / ${disk} Disk`, price });
+  saveCart();
+  updateCartUI();
+  toast('Ditambahkan ke keranjang','success','Lihat',()=> openSheet(),4000);
+}
+function removeFromCart(i){ cart.splice(i,1); saveCart(); updateCartUI(); }
+function updateCartUI(){
+  if(cart.length>0){ cartCount.style.display='inline-block'; cartCount.textContent = cart.length; } else cartCount.style.display='none';
+  renderCart();
+}
+function renderCart(){
+  cartItemsEl.innerHTML = '';
+  if(cart.length===0){
+    cartItemsEl.innerHTML = '<div style="padding:12px;color:rgba(255,255,255,.8)">Keranjang kosong</div>';
+    return;
+  }
+  cart.forEach((it, idx)=>{
+    const div = document.createElement('div'); div.className='item';
+    div.innerHTML = `<div style="max-width:72%"><div style="font-weight:800">${it.name}</div></div>
+      <div style="text-align:right"><div style="font-weight:800">Rp ${it.price.toLocaleString('id-ID')}</div>
+      <button class="remove" onclick="removeFromCart(${idx})" title="Batal">✖</button></div>`;
+    cartItemsEl.appendChild(div);
+  });
+}
+
+/* sheet */
+function openSheet(){ cartSheet.classList.add('show'); cartSheet.setAttribute('aria-hidden','false'); }
+function closeSheet(){ cartSheet.classList.remove('show'); cartSheet.setAttribute('aria-hidden','true'); }
+
+/* switch modal */
+function openSwitch(fromIdx){
+  switchGrid.innerHTML = '';
+  panels.forEach((p, idx)=>{
+    const [name, ram, cpu, disk, price] = p;
+    const sc = document.createElement('div'); sc.className='scard';
+    sc.innerHTML = `<div><div class="name">${name}</div><div class="sub">${ram} • ${cpu} • ${disk}</div></div><div class="price">Rp ${price.toLocaleString('id-ID')}</div>`;
+    sc.addEventListener('click', ()=> {
+      const chosenBase = name.split(' - ')[0];
+      const originalBase = panels[fromIdx][0].split(' - ')[0];
+      cart = cart.filter(c => c.base !== chosenBase && !c.name.startsWith(originalBase));
+      cart.push({ base: chosenBase, name:`${name} - ${ram} RAM / ${cpu} / ${disk} Disk`, price });
+      saveCart();
+      updateCartUI();
+      toast(`${name} dipilih`,'success','Lihat Keranjang',()=> openSheet());
+      closeModal();
+    });
+    switchGrid.appendChild(sc);
+  });
+  modalBack.classList.add('show');
+  modalBack.setAttribute('aria-hidden','false');
+}
+function closeModal(){ modalBack.classList.remove('show'); modalBack.setAttribute('aria-hidden','true'); }
+
+/* QUICK TG */
+function quickTG(name,price){
+  const username='Regalsenpai';
+  const msg = `bang aku mau beli panel - ${name} Rp ${price.toLocaleString('id-ID')}`;
+  window.open(`https://t.me/${username}?text=${encodeURIComponent(msg)}`,'_blank');
+}
+
+/* telegram quick floating */
+function openTGQuick(){ const username='Regalsenpai'; const msg='halo, saya mau tanya tentang panel'; window.open(`https://t.me/${username}?text=${encodeURIComponent(msg)}`,'_blank'); }
+
+/* confirm modal flow */
+function openConfirm(method){
+  if(cart.length===0){ toast('Keranjang kosong!','error'); return; }
+  pendingCheckoutMethod = method;
+  const orderId = 'EG'+Date.now().toString().slice(-6);
+  let html = `<div class="small">Order ID: <strong>${orderId}</strong></div><div style="margin-top:8px">`;
+  cart.forEach(i=> html += `<div style="margin-bottom:6px"><strong>${i.name}</strong> — Rp ${i.price.toLocaleString('id-ID')}</div>`);
+  html += `</div><div style="margin-top:6px;font-size:13px;color:rgba(255,255,255,.85)"><em>Tekan "Konfirmasi & Kirim" untuk membuka chat.</em></div>`;
+  confirmSummary.innerHTML = html;
+  confirmBack.style.display = 'flex';
+}
+function closeConfirm(){ confirmBack.style.display = 'none'; pendingCheckoutMethod = null; }
+
+/* final send */
+function confirmAndSend(){
+  if(!pendingCheckoutMethod){ closeConfirm(); return; }
+  let msg = 'bang aku mau beli panel\n';
+  cart.forEach(i=> msg += `- ${i.name} Rp ${i.price.toLocaleString('id-ID')}\n`);
+  const orderId = 'EG'+Date.now().toString().slice(-6);
+  msg += `OrderID: ${orderId}`;
+  if(pendingCheckoutMethod === 'wa'){
+    const num = '6285166370226';
+    window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`,'_blank');
+  } else {
+    const username = 'Regalsenpai';
+    window.open(`https://t.me/${username}?text=${encodeURIComponent(msg)}`,'_blank');
+  }
+  cart = []; saveCart(); updateCartUI(); closeConfirm(); closeSheet();
+  toast('Pesanan dikirim. Terima kasih!','success');
+}
+
+/* music toggle */
+function toggleMusic(){ if(bgMusic.paused){ bgMusic.play().catch(()=>{}); musicStarted=true } else bgMusic.pause(); }
+
+/* init behaviors */
+document.getElementById('toggleBtn').addEventListener('click', ()=>{
+  const grid = document.getElementById('productList');
+  const btn = document.getElementById('toggleBtn');
+  if(grid.style.display === 'grid'){ grid.style.display='none'; btn.textContent='📦 Lihat List Panel' }
+  else{ grid.style.display='grid'; btn.textContent='❌ Tutup List Panel'; if(!musicStarted){ try{ bgMusic.play(); musicStarted=true }catch(e){} } }
+});
+const cartFabEl = document.getElementById('cartFab');
+cartFabEl.addEventListener('click', ()=> { if(cart.length===0){ toast('Keranjang kosong!','error'); return } openSheet(); });
+renderProducts(); updateCartUI();
+
+/* =======================
+   AI CHAT WIDGET (local + optional remote)
+   - Default: local rule-based replies
+   - To use real LLM: set CHAT_API_URL to your server endpoint that proxies to OpenAI/LLM
+   ======================= */
+const CHAT_API_URL = null; // <-- isi endpoint servermu jika mau pakai LLM (server must keep API key)
+const chatFabBtn = document.getElementById('chatFabBtn');
+const chatPanel = document.getElementById('chatPanel');
+const chatBody = document.getElementById('chatBody');
+const chatInput = document.getElementById('chatInput');
+const chatSendBtn = document.getElementById('chatSendBtn');
+const chatStatus = document.getElementById('chatStatus');
+
+chatFabBtn.addEventListener('click', openChatPanel);
+chatSendBtn.addEventListener('click', onSendChat);
+chatInput.addEventListener('keydown', (e)=> { if(e.key==='Enter') onSendChat(); });
+
+function openChatPanel(){
+  chatPanel.style.display = 'flex';
+  chatInput.focus();
+  // greet only if empty
+  if(chatBody.children.length === 0) addBotMessage("Hai! Aku Yuuki AI. Mau tanya soal produk, harga, atau cara order? 😊");
+}
+function closeChatPanel(){ chatPanel.style.display = 'none'; }
+
+function appendMsg(text, from='bot'){
+  const el = document.createElement('div');
+  el.className = 'msg ' + (from==='user' ? 'user' : 'bot');
+  el.textContent = text;
+  chatBody.appendChild(el);
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
+function addUserMessage(text){ appendMsg(text,'user'); }
+function addBotMessage(text){ appendMsg(text,'bot'); }
+
+function sendQuick(text){ chatInput.value = text; onSendChat(); }
+
+async function onSendChat(){
+  const txt = (chatInput.value || '').trim();
+  if(!txt) return;
+  addUserMessage(txt);
+  chatInput.value = '';
+  setChatStatus('Sedang mengetik...');
+  // try remote
+  if(CHAT_API_URL){
+    try{
+      const res = await fetch(CHAT_API_URL, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ message: txt })
+      });
+      if(res.ok){
+        const data = await res.json();
+        const reply = (data && data.reply) ? data.reply : 'Maaf, server tidak memberikan jawaban.';
+        addBotMessage(reply);
+        setChatStatus('Siap membantu');
+        return;
+      } else {
+        console.warn('Remote chat failed', res.status);
+      }
+    } catch(err){
+      console.warn('Remote error', err);
+    }
+  }
+  // fallback local
+  const localReply = localBotReply(txt);
+  addBotMessage(localReply);
+  setChatStatus('Siap membantu');
+}
+
+/* status */
+function setChatStatus(s){ chatStatus.textContent = s; }
+
+/* local lightweight reply using existing panels data */
+function localBotReply(msg){
+  const m = msg.toLowerCase();
+  if(/halo|hi|hai|hei/.test(m)) return 'Halo Ega! Mau lihat list panel atau langsung order?';
+  if(/harga|berapa|rp|rupiah/.test(m)){
+    for(let p of panels){
+      if(m.includes(p[1].toLowerCase()) || m.includes(p[0].toLowerCase())) return `${p[0]} — Rp ${p[4].toLocaleString('id-ID')}. Spesifikasi: RAM ${p[1]}, CPU ${p[2]}, Disk ${p[3]}. Mau tambah ke keranjang?`;
+    }
+    return 'Harga tersedia: 1GB Rp 1.000 … sampai Unlimited Rp 15.000. Mau aku tambahkan ke keranjang salah satu?';
+  }
+  if(/cara beli|cara order|bagaimana beli|order/.test(m)) return 'Pilih panel → Tambah ke Keranjang → Buka Keranjang → Pesan via WA / Telegram. Mau aku bantu kirim sekarang?';
+  if(/buka keranjang|lihat keranjang/.test(m)){ openSheet(); return 'Keranjang dibuka — silakan cek dan konfirmasi pesanan.'; }
+  if(/1gb|2gb|3gb|4gb|5gb|6gb|7gb|8gb|9gb|10gb|unlimited/.test(m)){
+    for(let p of panels){
+      if(m.includes(p[1].toLowerCase()) || m.includes(p[0].toLowerCase())){
+        return `${p[0]} — Rp ${p[4].toLocaleString('id-ID')}. Ketik "Tambah ${p[0]}" untuk memasukkan ke keranjang, atau tekan tombol "Tambah ke Keranjang" di produk.`;
+      }
+    }
+  }
+  if(/^tambah\s+(panel\s+)?\d+gb|tambah/i.test(m)){
+    const found = panels.find(p => m.includes(p[1].toLowerCase()) || m.includes(p[0].toLowerCase()));
+    if(found){
+      addToCart(found[0], found[4], found[1], found[2], found[3]);
+      return `Oke, aku coba tambahkan ${found[0]} ke keranjang. Buka keranjang untuk cek.`;
+    } else return 'Sebutkan ukuran, misal "Tambah 1GB" atau tekan tombol "Tambah ke Keranjang" di produk.';
+  }
+  const replies = [
+    'Maaf, aku belum paham. Coba tanyakan tentang harga, cara beli, atau ketik "Buka keranjang".',
+    'Aku bisa bantu: cek harga, tambah ke keranjang (contoh: "Tambah 1GB"), atau buka keranjang.',
+    'Coba: "Harga 1GB", "Cara beli", atau "Buka keranjang".'
+  ];
+  return replies[Math.floor(Math.random()*replies.length)];
+}
+
+/* try add product by name (used by local bot) */
+function addToCartByName(productName){
+  const cards = document.querySelectorAll('.card');
+  for(const card of cards){
+    const title = (card.querySelector('.title')||{textContent:''}).textContent.trim();
+    if(title === productName){
+      const btn = card.querySelector('.action-wa, .action-tg, .action-btn');
+      if(btn) { btn.click(); return true; }
+    }
+  }
+  // fallback to addToCart function (we have it)
+  const p = panels.find(p=>p[0]===productName);
+  if(p){ addToCart(p[0], p[4], p[1], p[2], p[3]); return true; }
+  return false;
+}
+
+/* initial small greeting not to spam */
+(function initChat(){ /* nothing heavy */ })();
+</script>
+</body>
+</html>
