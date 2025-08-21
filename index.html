@@ -63,17 +63,21 @@ header{
 .title{font-size:16px;font-weight:700;margin-bottom:6px;}
 .specs{font-size:13px;margin-bottom:8px;opacity:.9;line-height:1.4;}
 .price{opacity:.95;margin-bottom:12px;}
-.wa, .remove-btn{
-  width:100%; padding:10px; border:none; border-radius:10px; font-weight:700; cursor:pointer;
+.wa, .remove-btn, .switch-btn{
+  width:100%; padding:10px; border:none; border-radius:10px; font-weight:700; cursor:pointer; margin-bottom:6px;
 }
 .wa{
   background: linear-gradient(135deg,#25D366,#3ae38a); color:#001b0c; box-shadow: 0 0 14px rgba(37,211,102,.45);
 }
 .wa:hover{ transform:translateY(-2px); }
 .remove-btn{
-  background:#ff4d6d; color:#fff; margin-top:6px; box-shadow:0 0 12px rgba(255,77,109,.4);
+  background:#ff4d6d; color:#fff; box-shadow:0 0 12px rgba(255,77,109,.4);
 }
 .remove-btn:hover{ transform:translateY(-2px); }
+.switch-btn{
+  background:#6a5cff; color:#fff; box-shadow:0 0 12px rgba(155,92,255,.45);
+}
+.switch-btn:hover{ transform:translateY(-2px); }
 
 /* Keranjang popup */
 .cart-popup{
@@ -161,12 +165,13 @@ header{
 </div>
 
 <section class="grid" id="productList">
-  <!-- Panel contoh, tambahkan 1GB sampai 10GB + Unlimited -->
+  <!-- Panel contoh -->
   <div class="card">
     <div class="title">Panel 1GB</div>
     <div class="specs">RAM: 1GB<br>CPU: 1 Core<br>Disk: 10GB</div>
     <div class="price">Rp 1.000</div>
     <button class="wa" onclick="addCart('Panel 1GB - 1GB RAM / 1 Core CPU / 10GB Disk',1000)">Tambah ke Keranjang</button>
+    <button class="switch-btn" onclick="switchCart('Panel 1GB - 1GB RAM / 1 Core CPU / 10GB Disk','Panel 2GB - 2GB RAM / 2 Core CPU / 20GB Disk',2000)">Ganti ke 2GB</button>
   </div>
   <div class="card">
     <div class="title">Panel Unlimited</div>
@@ -188,7 +193,7 @@ header{
 <section class="bio">
   <div class="bio-card">
     <h3>Halo! Aku Ega 😎</h3>
-    <p>Selamat datang di <strong>Egazzx X Yuuki Store</strong>! Pilih panel favoritmu, satu per tipe. Klik “Batal” jika berubah pikiran, atau “Pesan via WA” untuk order otomatis ke Ega. Santai, aman, cepat! 💜</p>
+    <p>Selamat datang di <strong>Egazzx X Yuuki Store</strong>! Pilih panel favoritmu, satu per tipe. Klik “Batal” jika berubah pikiran, atau “Pesan via WA / Telegram” untuk order otomatis ke Ega. Santai, aman, cepat! 💜</p>
   </div>
 </section>
 
@@ -197,6 +202,7 @@ header{
 <h3>Keranjang Belanja</h3>
 <div id="cartItems"></div>
 <button class="checkout-btn" onclick="checkoutCart()">Pesan via WA</button>
+<button class="checkout-btn" style="background:#0088cc;" onclick="checkoutTelegram()">Pesan via Telegram</button>
 </div>
 
 <!-- Musik -->
@@ -232,12 +238,20 @@ function addCart(name,price){
   showCart();
 }
 
+function switchCart(oldName,newName,newPrice){
+  // hapus yang lama
+  cart = cart.filter(i=>i.name!==oldName);
+  // tambah yang baru
+  cart.push({name:newName,price:newPrice});
+  showCart();
+}
+
 function showCart(){
   const popup=document.getElementById('cartPopup');
   const items=document.getElementById('cartItems');
   items.innerHTML='';
   cart.forEach((i,idx)=>{
-    items.innerHTML+=`<div class="cart-item">${i.name} - Rp ${i.price.toLocaleString('id-ID')} <button class="remove-btn" onclick="removeCart(${idx})">Batal</button></div>`;
+    items.innerHTML+=`<div class="cart-item">${i.name} - Rp ${i.price.toLocaleString('id-ID')} <button class="remove-btn" onclick="removeCart(${idx})">✖</button></div>`;
   });
   popup.classList.toggle('show', cart.length>0);
 }
@@ -253,6 +267,15 @@ function checkoutCart(){
   cart.forEach(i=>{ msg+=`- ${i.name} Rp ${i.price.toLocaleString('id-ID')}\n`; });
   const num='6285166370226';
   window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`,'_blank');
+  cart=[]; showCart();
+}
+
+function checkoutTelegram(){
+  if(cart.length===0){ alert('Keranjang kosong!'); return; }
+  let msg='Bang aku mau beli panel:\n';
+  cart.forEach(i=>{ msg+=`- ${i.name} Rp ${i.price.toLocaleString('id-ID')}\n`; });
+  const username='Regalsenpai';
+  window.open(`https://t.me/${username}?text=${encodeURIComponent(msg)}`,'_blank');
   cart=[]; showCart();
 }
 </script>
