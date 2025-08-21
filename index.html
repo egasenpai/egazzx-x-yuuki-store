@@ -59,6 +59,7 @@ header{
   box-shadow: 0 10px 30px rgba(155,92,255,.25), 0 0 24px rgba(255,77,190,.15);
 }
 .title{font-size:16px;font-weight:700;margin-bottom:6px;}
+.specs{font-size:13px;margin-bottom:8px;opacity:.9;line-height:1.4;}
 .price{opacity:.95;margin-bottom:12px;}
 .wa{
   width:100%; padding:10px; border:none; border-radius:10px; font-weight:700; cursor:pointer;
@@ -145,17 +146,19 @@ header{
 </div>
 
 <section class="grid" id="productList">
-  <div class="card"><div class="title">Panel 1GB</div><div class="price">Rp 1.000</div><button class="wa" onclick="addCart('Panel 1GB',1000)">Tambah ke Keranjang</button></div>
-  <div class="card"><div class="title">Panel 2GB</div><div class="price">Rp 2.000</div><button class="wa" onclick="addCart('Panel 2GB',2000)">Tambah ke Keranjang</button></div>
-  <div class="card"><div class="title">Panel 3GB</div><div class="price">Rp 3.000</div><button class="wa" onclick="addCart('Panel 3GB',3000)">Tambah ke Keranjang</button></div>
-  <div class="card"><div class="title">Panel 4GB</div><div class="price">Rp 4.000</div><button class="wa" onclick="addCart('Panel 4GB',4000)">Tambah ke Keranjang</button></div>
-  <div class="card"><div class="title">Panel 5GB</div><div class="price">Rp 5.000</div><button class="wa" onclick="addCart('Panel 5GB',5000)">Tambah ke Keranjang</button></div>
-  <div class="card"><div class="title">Panel 6GB</div><div class="price">Rp 6.000</div><button class="wa" onclick="addCart('Panel 6GB',6000)">Tambah ke Keranjang</button></div>
-  <div class="card"><div class="title">Panel 7GB</div><div class="price">Rp 7.000</div><button class="wa" onclick="addCart('Panel 7GB',7000)">Tambah ke Keranjang</button></div>
-  <div class="card"><div class="title">Panel 8GB</div><div class="price">Rp 8.000</div><button class="wa" onclick="addCart('Panel 8GB',8000)">Tambah ke Keranjang</button></div>
-  <div class="card"><div class="title">Panel 9GB</div><div class="price">Rp 9.000</div><button class="wa" onclick="addCart('Panel 9GB',9000)">Tambah ke Keranjang</button></div>
-  <div class="card"><div class="title">Panel 10GB</div><div class="price">Rp 10.000</div><button class="wa" onclick="addCart('Panel 10GB',10000)">Tambah ke Keranjang</button></div>
-  <div class="card"><div class="title">Panel Unlimited</div><div class="price">Rp 15.000</div><button class="wa" onclick="addCart('Panel Unlimited',15000)">Tambah ke Keranjang</button></div>
+  <!-- Panel 1GB sampai 10GB -->
+  <div class="card"><div class="title">Panel 1GB</div><div class="specs">RAM: 1GB<br>CPU: 1 Core<br>Disk: 10GB</div><div class="price">Rp 1.000</div><button class="wa" onclick="addCart('Panel 1GB - 1GB RAM / 1 Core CPU / 10GB Disk',1000)">Tambah ke Keranjang</button></div>
+  <div class="card"><div class="title">Panel 2GB</div><div class="specs">RAM: 2GB<br>CPU: 2 Core<br>Disk: 20GB</div><div class="price">Rp 2.000</div><button class="wa" onclick="addCart('Panel 2GB - 2GB RAM / 2 Core CPU / 20GB Disk',2000)">Tambah ke Keranjang</button></div>
+  <div class="card"><div class="title">Panel 3GB</div><div class="specs">RAM: 3GB<br>CPU: 3 Core<br>Disk: 30GB</div><div class="price">Rp 3.000</div><button class="wa" onclick="addCart('Panel 3GB - 3GB RAM / 3 Core CPU / 30GB Disk',3000)">Tambah ke Keranjang</button></div>
+  <div class="card"><div class="title">Panel 4GB</div><div class="specs">RAM: 4GB<br>CPU: 4 Core<br>Disk: 40GB</div><div class="price">Rp 4.000</div><button class="wa" onclick="addCart('Panel 4GB - 4GB RAM / 4 Core CPU / 40GB Disk',4000)">Tambah ke Keranjang</button></div>
+  <div class="card"><div class="title">Panel 5GB</div><div class="specs">RAM: 5GB<br>CPU: 5 Core<br>Disk: 50GB</div><div class="price">Rp 5.000</div><button class="wa" onclick="addCart('Panel 5GB - 5GB RAM / 5 Core CPU / 50GB Disk',5000)">Tambah ke Keranjang</button></div>
+  <div class="card"><div class="title">Panel 6GB</div><div class="specs">RAM: 6GB<br>CPU: 6 Core<br>Disk: 60GB</div><div class="price">Rp 6.000</div><button class="wa" onclick="addCart('Panel 6GB - 6GB RAM / 6 Core CPU / 60GB Disk',6000)">Tambah ke Keranjang</button></div>
+  <div class="card"><div class="title">Panel 7GB</div><div class="specs">RAM: 7GB<br>CPU: 7 Core<br>Disk: 70GB</div><div class="price">Rp 7.000</div><button class="wa" onclick="addCart('Panel 7GB - 7GB RAM / 7 Core CPU / 70GB Disk',7000)">Tambah ke Keranjang</button></div>
+  <div class="card"><div class="title">Panel 8GB</div><div class="specs">RAM: 8GB<br>CPU: 8 Core<br>Disk: 80GB</div><div class="price">Rp 8.000</div><button class="wa" onclick="addCart('Panel 8GB - 8GB RAM / 8 Core CPU / 80GB Disk',8000)">Tambah ke Keranjang</button></div>
+  <div class="card"><div class="title">Panel 9GB</div><div class="specs">RAM: 9GB<br>CPU: 9 Core<br>Disk: 90GB</div><div class="price">Rp 9.000</div><button class="wa" onclick="addCart('Panel 9GB - 9GB RAM / 9 Core CPU / 90GB Disk',9000)">Tambah ke Keranjang</button></div>
+  <div class="card"><div class="title">Panel 10GB</div><div class="specs">RAM: 10GB<br>CPU: 10 Core<br>Disk: 100GB</div><div class="price">Rp 10.000</div><button class="wa" onclick="addCart('Panel 10GB - 10GB RAM / 10 Core CPU / 100GB Disk',10000)">Tambah ke Keranjang</button></div>
+  <!-- Panel Unlimited -->
+  <div class="card"><div class="title">Panel Unlimited</div><div class="specs">RAM: ∞<br>CPU: ∞<br>Disk: ∞</div><div class="price">Rp 15.000</div><button class="wa" onclick="addCart('Panel Unlimited - RAM ∞ / CPU ∞ / Disk ∞',15000)">Tambah ke Keranjang</button></div>
 </section>
 
 <!-- Gallery Section -->
