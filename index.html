@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Egazzx X Yuuki Store</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
+:root{
+  --violet:#9b5cff;
+  --pink:#ff4dbe;
+  --blue:#1c2a44;
+  --neon:#00ffe0;
+  --glass: rgba(255,255,255,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Poppins',sans-serif;color:#fff;overflow-x:hidden;min-height:100dvh; background:#0b0f1a;}
+.bg{
+  position:fixed;inset:0;z-index:-2;
+  background-image:url('https://files.catbox.moe/y2taqp.png');
+  background-size:cover;background-position:center;
+}
+.overlay{
+  position:fixed;inset:0;z-index:-1;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(2px);
+}
+header{
+  text-align:center;padding:18px 12px;font-weight:800;font-size:26px;letter-spacing:.5px;
+  background: linear-gradient(90deg, var(--violet), var(--pink));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  text-shadow: 0 0 12px rgba(155,92,255,.45), 0 0 18px rgba(255,77,190,.35);
+}
+.cta{display:flex;justify-content:center;gap:10px;margin:18px 12px 8px;}
+.btn{
+  background: linear-gradient(135deg, var(--neon), #6fffe1);
+  color:#001b18;border:none;border-radius:12px;padding:12px 18px;font-weight:700;
+  box-shadow: 0 0 18px rgba(0,255,224,.45);
+  transition:.25s; cursor:pointer;
+}
+.btn:hover{ transform: translateY(-2px) scale(1.02); box-shadow:0 0 28px rgba(0,255,224,.6); }
+
+.grid{
+  display:none;
+  grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
+  gap:14px;padding:18px;max-width:980px;margin:0 auto;
+  animation:fadeIn .6s ease;
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.card{
+  background: var(--glass);
+  border-radius:16px; padding:14px; backdrop-filter: blur(8px);
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow: 0 8px 24px rgba(0,0,0,.35);
+  transition:.25s;
+}
+.card:hover{
+  transform: translateY(-6px);
+  box-shadow: 0 10px 30px rgba(155,92,255,.25), 0 0 24px rgba(255,77,190,.15);
+}
+.title{font-size:16px;font-weight:700;margin-bottom:6px;}
+.price{opacity:.95;margin-bottom:12px;}
+.wa{
+  width:100%; padding:10px; border:none; border-radius:10px; font-weight:700; cursor:pointer;
+  background: linear-gradient(135deg,#25D366,#3ae38a); color:#001b0c;
+  box-shadow: 0 0 14px rgba(37,211,102,.45);
+}
+.wa:hover{ transform:translateY(-2px); }
+
+#musicBtn{
+  position:fixed; right:16px; bottom:18px; z-index:5;
+  width:52px; height:52px; border-radius:50%; border:none; cursor:pointer;
+  background: radial-gradient(circle at 30% 30%, var(--pink), var(--violet));
+  color:white; font-size:1.2rem; box-shadow:0 0 18px rgba(155,92,255,.55);
+}
+.cart-popup{
+  position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+  background:rgba(0,0,0,0.85); padding:18px; border-radius:14px;
+  display:none; width:90%; max-width:320px; z-index:10;
+}
+.cart-popup h3{margin-bottom:12px;text-align:center;}
+.cart-item{margin-bottom:10px;font-size:14px;}
+.close-cart{background:#ff4d6d;color:#fff;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;width:100%;}
+
+/* Gallery */
+.gallery{
+  display:grid;
+  grid-template-columns: repeat(auto-fit,minmax(140px,1fr));
+  gap:12px; padding:16px; max-width:980px; margin:18px auto;
+}
+.img-card{
+  overflow:hidden; border-radius:12px; border:1px solid rgba(255,255,255,0.1);
+  transition: transform .3s, box-shadow .3s;
+}
+.img-card img{
+  width:100%; display:block; height:auto;
+}
+.img-card:hover{
+  transform: scale(1.05);
+  box-shadow: 0 0 16px rgba(155,92,255,0.35);
+}
+
+/* Bio */
+.bio{
+  max-width: 880px;
+  margin: 24px auto 36px;
+  padding:16px;
+  text-align:center;
+}
+.bio-card{
+  background: rgba(255,255,255,0.08);
+  border-radius:16px;
+  padding:16px;
+  backdrop-filter: blur(6px);
+  border:1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  transition:.25s;
+}
+.bio-card h3{
+  font-size:20px;
+  font-weight:800;
+  margin-bottom:8px;
+  color: #ff4dbe;
+  text-shadow: 0 0 8px rgba(255,77,190,.45);
+}
+.bio-card p{
+  font-size:14px;
+  line-height:1.5;
+  color:#fff;
+}
+.bio-card:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(155,92,255,.25);
+}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="overlay"></div>
+
+<header>Egazzx X Yuuki Store</header>
+
+<div class="cta">
+<button class="btn" id="toggleBtn" onclick="toggleProducts()">📦 Lihat List Panel</button>
+</div>
+
+<section class="grid" id="productList">
+  <div class="card"><div class="title">Panel 1GB</div><div class="price">Rp 1.000</div><button class="wa" onclick="addCart('Panel 1GB',1000)">Tambah ke Keranjang</button></div>
+  <div class="card"><div class="title">Panel 2GB</div><div class="price">Rp 2.000</div><button class="wa" onclick="addCart('Panel 2GB',2000)">Tambah ke Keranjang</button></div>
+  <div class="card"><div class="title">Panel 3GB</div><div class="price">Rp 3.000</div><button class="wa" onclick="addCart('Panel 3GB',3000)">Tambah ke Keranjang</button></div>
+  <div class="card"><div class="title">Panel 4GB</div><div class="price">Rp 4.000</div><button class="wa" onclick="addCart('Panel 4GB',4000)">Tambah ke Keranjang</button></div>
+  <div class="card"><div class="title">Panel 5GB</div><div class="price">Rp 5.000</div><button class="wa" onclick="addCart('Panel 5GB',5000)">Tambah ke Keranjang</button></div>
+  <div class="card"><div class="title">Panel 6GB</div><div class="price">Rp 6.000</div><button class="wa" onclick="addCart('Panel 6GB',6000)">Tambah ke Keranjang</button></div>
+  <div class="card"><div class="title">Panel 7GB</div><div class="price">Rp 7.000</div><button class="wa" onclick="addCart('Panel 7GB',7000)">Tambah ke Keranjang</button></div>
+  <div class="card"><div class="title">Panel 8GB</div><div class="price">Rp 8.000</div><button class="wa" onclick="addCart('Panel 8GB',8000)">Tambah ke Keranjang</button></div>
+  <div class="card"><div class="title">Panel 9GB</div><div class="price">Rp 9.000</div><button class="wa" onclick="addCart('Panel 9GB',9000)">Tambah ke Keranjang</button></div>
+  <div class="card"><div class="title">Panel 10GB</div><div class="price">Rp 10.000</div><button class="wa" onclick="addCart('Panel 10GB',10000)">Tambah ke Keranjang</button></div>
+  <div class="card"><div class="title">Panel Unlimited</div><div class="price">Rp 15.000</div><button class="wa" onclick="addCart('Panel Unlimited',15000)">Tambah ke Keranjang</button></div>
+</section>
+
+<!-- Gallery Section -->
+<section class="gallery">
+  <div class="img-card"><img src="https://files.catbox.moe/3jnb5z.jpeg" alt="Gallery 1"></div>
+  <div class="img-card"><img src="https://files.catbox.moe/32dpue.jpeg" alt="Gallery 2"></div>
+  <div class="img-card"><img src="https://files.catbox.moe/ysop95.jpeg" alt="Gallery 3"></div>
+  <div class="img-card"><img src="https://files.catbox.moe/fihjrg.jpeg" alt="Gallery 4"></div>
+</section>
+
+<!-- Bio Section -->
+<section class="bio">
+  <div class="bio-card">
+    <h3>Halo! Aku Ega 😎</h3>
+    <p>Selamat datang di <strong>Egazzx X Yuuki Store</strong>! Aku jual panel internet cepat dan murah untuk semua kebutuhanmu.  
+       Di sini kamu bisa pilih panel 1GB sampai Unlimited, tinggal klik & langsung order via WhatsApp.  
+       Santai, aman, dan cepat! 💜</p>
+  </div>
+</section>
+
+<!-- Keranjang popup -->
+<div class="cart-popup" id="cartPopup">
+<h3>Keranjang Belanja</h3>
+<div id="cartItems"></div>
+<button class="close-cart" onclick="checkoutCart()">Pesan via WA</button>
+</div>
+
+<!-- Musik -->
+<audio id="bgMusic" loop>
+<source src="https://files.catbox.moe/dmiea0.mp3" type="audio/mpeg">
+</audio>
+<button id="musicBtn" onclick="toggleMusic()">🎵</button>
+
+<script>
+let listVisible=false,musicStarted=false;
+const music=document.getElementById('bgMusic');
+let cart=[];
+
+function startMusicOnce(){ if(!musicStarted){ music.play().catch(()=>{}); musicStarted=true; } }
+function toggleMusic(){ music.paused ? music.play() : music.pause(); }
+
+function toggleProducts(){
+  startMusicOnce();
+  const grid=document.getElementById('productList');
+  const btn=document.getElementById('toggleBtn');
+  if(listVisible){ grid.style.display='none'; btn.textContent='📦 Lihat List Panel'; }
+  else{ grid.style.display='grid'; btn.textContent='❌ Tutup List Panel'; }
+  listVisible=!listVisible;
+}
+
+function addCart(name,price){
+  cart.push({name,price});
+  showCart();
+}
+
+function showCart(){
+  const popup=document.getElementById('cartPopup');
+  const items=document.getElementById('cartItems');
+  items.innerHTML='';
+  cart.forEach((i,idx)=>{items.innerHTML+=`<div class="cart-item">${i.name} - Rp ${i.price.toLocaleString('id-ID')}</div>`;});
+  popup.style.display='block';
+}
+
+function checkoutCart(){
+  if(cart.length===0){ alert('Keranjang kosong'); return; }
+  let msg='Bang aku mau beli panel:\n';
+  cart.forEach(i=>{ msg+=`- ${i.name} Rp ${i.price.toLocaleString('id-ID')}\n`; });
+  const num='6285166370226';
+  window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`,'_blank');
+}
+</script>
+</body>
+</html>
