@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Egazzx X Yuuki Store</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
+:root{
+  --violet:#9b5cff; --pink:#ff4dbe; --neon:#00ffe0; --glass: rgba(255,255,255,0.08);
+  --muted: rgba(255,255,255,0.06);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Poppins',sans-serif;background:#0b0f1a;color:#fff;
+  -webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:hidden;
+}
+.bg{position:fixed;inset:0;z-index:-2;background-image:url('https://files.catbox.moe/y2taqp.png');background-size:cover;background-position:center;filter:contrast(.95) saturate(1.05);}
+.overlay{position:fixed;inset:0;z-index:-1;background:rgba(0,0,0,.56);backdrop-filter:blur(2px);}
+header{text-align:center;padding:18px 12px;font-weight:800;font-size:26px;background:linear-gradient(90deg,var(--violet),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 0 10px rgba(155,92,255,.3);}
+
+/* controls */
+.controls{display:flex;justify-content:center;margin:16px;}
+.btn{background:linear-gradient(135deg,var(--neon),#6fffe1);border:none;padding:12px 18px;border-radius:12px;color:#001b18;font-weight:700;box-shadow:0 8px 30px rgba(0,255,224,.06);cursor:pointer}
+
+/* product grid */
+.grid{max-width:980px;margin:0 auto;padding:12px;gap:14px;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));animation:fadeIn .45s ease;display:grid}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card{background:var(--glass);border-radius:14px;padding:14px;backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.06);box-shadow:0 8px 20px rgba(0,0,0,.45);position:relative;transition:transform .18s ease,box-shadow .18s ease}
+.card:hover{transform:translateY(-6px);box-shadow:0 14px 36px rgba(0,0,0,.6), 0 0 24px rgba(155,92,255,.05)}
+.title{font-weight:800;font-size:16px;margin-bottom:8px}
+.specs{font-size:13px;opacity:.92;margin-bottom:10px;line-height:1.35}
+.price{font-weight:800;margin-bottom:10px}
+.actions{display:flex;gap:8px;flex-direction:column}
+.btn-full{width:100%;padding:10px;border-radius:10px;border:none;font-weight:700;cursor:pointer}
+.btn-wa{background:linear-gradient(135deg,#25D366,#3ae38a);color:#001b0c;box-shadow:0 6px 18px rgba(37,211,102,.08)}
+.btn-tg{background:linear-gradient(135deg,#0088cc,#00a3ff);color:#fff;box-shadow:0 6px 18px rgba(0,150,255,.06)}
+.btn-switch{background:linear-gradient(135deg,#6a5cff,#8a76ff);color:#fff}
+.small-row{display:flex;gap:8px;align-items:center;margin-top:6px}
+
+/* floating Telegram quick-chat */
+.tg-floating{position:fixed;left:16px;bottom:18px;z-index:60;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(45deg,#00a3ff,#006bb3);box-shadow:0 8px 30px rgba(0,100,200,.18);cursor:pointer;font-size:22px;color:#fff}
+
+/* cart bottom sheet */
+.cart-popup{position:fixed;left:50%;transform:translateX(-50%);bottom:-100%;width:92%;max-width:420px;background:rgba(7,8,12,.98);padding:14px;border-radius:14px;box-shadow:0 20px 40px rgba(0,0,0,.6);transition:bottom .35s ease;z-index:80}
+.cart-popup.show{bottom:18px}
+.cart-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.cart-items{max-height:260px;overflow:auto;margin-bottom:10px;padding-right:6px}
+.cart-item{display:flex;justify-content:space-between;align-items:center;padding:8px 6px;border-radius:8px;margin-bottom:8px;background:rgba(255,255,255,0.02)}
+.cart-item .name{font-size:14px}
+.cart-item .price{font-weight:700}
+.remove-btn{background:#ff6b81;border:none;color:#fff;border-radius:8px;padding:6px 8px;cursor:pointer}
+.checkout-row{display:flex;gap:8px}
+.checkout-btn{flex:1;padding:10px;border-radius:10px;border:none;font-weight:800;cursor:pointer}
+.checkout-wa{background:linear-gradient(135deg,#25D366,#2ecc71);color:#001b0c}
+.checkout-tg{background:linear-gradient(135deg,#0088cc,#00a3ff);color:#fff}
+
+/* gallery */
+.gallery{max-width:980px;margin:18px auto;padding:12px;display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
+.img-card{overflow:hidden;border-radius:12px;border:1px solid rgba(255,255,255,.06);background:#111}
+.img-card img{width:100%;display:block;height:auto}
+
+/* bio */
+.bio{max-width:880px;margin:22px auto;padding:12px}
+.bio-card{background:rgba(255,255,255,.04);padding:14px;border-radius:12px;backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,.04)}
+.bio-card h3{color:#ff4dbe;margin-bottom:8px}
+.bio-card p{line-height:1.5;font-size:14px;opacity:.95}
+
+/* SWITCH MODAL (keren & modern) */
+.switch-modal{
+  position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.98);
+  width:94%;max-width:540px;background:linear-gradient(180deg,rgba(8,8,10,0.98),rgba(6,6,8,0.98));
+  border-radius:14px;padding:10px;box-shadow:0 30px 80px rgba(0,0,0,.6);z-index:120;opacity:0;pointer-events:none;transition:opacity .18s ease,transform .18s ease;
+}
+.switch-modal.show{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1);}
+.switch-head{display:flex;justify-content:space-between;align-items:center;padding:6px 4px;margin-bottom:8px}
+.switch-title{font-weight:800}
+.switch-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;max-height:330px;overflow:auto;padding:6px}
+.switch-card{background:rgba(255,255,255,0.02);border-radius:10px;padding:10px;border:1px solid rgba(255,255,255,0.03);cursor:pointer;transition:transform .12s ease,box-shadow .12s ease;display:flex;flex-direction:column;justify-content:space-between}
+.switch-card:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(0,0,0,.5)}
+.switch-name{font-weight:700;margin-bottom:6px}
+.switch-sub{font-size:12px;opacity:.85;margin-bottom:8px}
+.switch-price{font-weight:800}
+.switch-close{margin-top:10px;width:100%;padding:10px;border-radius:10px;border:none;background:#333;color:#fff;cursor:pointer}
+
+/* small */
+@media(min-width:800px){.grid{grid-template-columns:repeat(2,1fr);padding:20px}}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="overlay"></div>
+
+<header>Egazzx X Yuuki Store</header>
+<div class="controls"><button class="btn" id="toggleBtn" onclick="toggleProducts()">📦 Lihat List Panel</button></div>
+
+<!-- PRODUCTS -->
+<section class="grid" id="productList" aria-live="polite"></section>
+
+<!-- Gallery -->
+<section class="gallery" aria-label="Gallery">
+  <div class="img-card"><img src="https://files.catbox.moe/3jnb5z.jpeg" alt="Gambar 1"></div>
+  <div class="img-card"><img src="https://files.catbox.moe/32dpue.jpeg" alt="Gambar 2"></div>
+  <div class="img-card"><img src="https://files.catbox.moe/ysop95.jpeg" alt="Gambar 3"></div>
+  <div class="img-card"><img src="https://files.catbox.moe/fihjrg.jpeg" alt="Gambar 4"></div>
+</section>
+
+<!-- Bio -->
+<section class="bio"><div class="bio-card"><h3>Halo! Aku Ega 😎</h3>
+<p>Selamat datang di <strong>Egazzx X Yuuki Store</strong> — panel cepat & murah. Pilih satu per tipe, ubah kalau mau, atau batal kalau berubah pikiran. Klik "Pesan" untuk kirim langsung ke WhatsApp atau Telegram. 💜</p></div></section>
+
+<!-- Cart bottom sheet -->
+<div class="cart-popup" id="cartPopup" role="dialog" aria-hidden="true">
+  <div class="cart-header"><strong>Keranjang Belanja</strong><button onclick="closeCart()" style="background:transparent;border:none;color:#fff;font-size:20px;cursor:pointer">✖</button></div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="checkout-row">
+    <button class="checkout-btn checkout-wa" onclick="checkoutCart()">Pesan via WA</button>
+    <button class="checkout-btn checkout-tg" onclick="checkoutTelegram()">Pesan via Telegram</button>
+  </div>
+</div>
+
+<!-- SWITCH MODAL -->
+<div class="switch-modal" id="switchModal" aria-hidden="true" role="dialog">
+  <div class="switch-head"><div class="switch-title">Pilih panel pengganti</div><button onclick="closeSwitchModal()" style="background:transparent;border:none;color:#fff;font-size:20px;cursor:pointer">✖</button></div>
+  <div class="switch-list" id="switchList"></div>
+  <button class="switch-close" onclick="closeSwitchModal()">Batal</button>
+</div>
+
+<!-- Floating Telegram quick-chat -->
+<button class="tg-floating" title="Chat Telegram" onclick="openTelegramQuick()">✈</button>
+
+<!-- Music -->
+<audio id="bgMusic" loop><source src="https://files.catbox.moe/dmiea0.mp3" type="audio/mpeg"></audio>
+<button id="musicBtn" onclick="toggleMusic()" style="position:fixed;right:18px;bottom:86px;z-index:70;width:52px;height:52px;border-radius:50%;border:none;background:linear-gradient(45deg,#ff7bd1,#9b5cff);box-shadow:0 8px 30px rgba(155,92,255,.18);color:#fff;font-size:20px">🎵</button>
+
+<script>
+/* Panels data */
+const panels = [
+  ['Panel 1GB','1GB','1 Core','10GB',1000],
+  ['Panel 2GB','2GB','2 Core','20GB',2000],
+  ['Panel 3GB','3GB','3 Core','30GB',3000],
+  ['Panel 4GB','4GB','4 Core','40GB',4000],
+  ['Panel 5GB','5GB','5 Core','50GB',5000],
+  ['Panel 6GB','6GB','6 Core','60GB',6000],
+  ['Panel 7GB','7GB','7 Core','70GB',7000],
+  ['Panel 8GB','8GB','8 Core','80GB',8000],
+  ['Panel 9GB','9GB','9 Core','90GB',9000],
+  ['Panel 10GB','10GB','10 Core','100GB',10000],
+  ['Panel Unlimited','∞','∞','∞',15000]
+];
+
+const productList = document.getElementById('productList');
+const cartPopup = document.getElementById('cartPopup');
+const cartItemsEl = document.getElementById('cartItems');
+const bgMusic = document.getElementById('bgMusic');
+const switchModal = document.getElementById('switchModal');
+const switchList = document.getElementById('switchList');
+
+let musicStarted = false;
+let cart = [];
+let listVisible = false;
+let switchingFromIndex = null;
+
+/* Render product cards */
+function renderCards(){
+  panels.forEach((p, idx)=>{
+    const [name, ram, cpu, disk, price] = p;
+    const card = document.createElement('div');
+    card.className = 'card';
+    // build actions and switch button
+    card.innerHTML = `
+      <div class="title">${name}</div>
+      <div class="specs">RAM: ${ram}<br>CPU: ${cpu}<br>Disk: ${disk}</div>
+      <div class="price">Rp ${price.toLocaleString('id-ID')}</div>
+      <div class="actions">
+        <button class="btn-full btn-wa">Tambah ke Keranjang</button>
+        <button class="btn-full btn-tg">Chat via Telegram</button>
+      </div>
+      <div class="small-row">
+        <button class="btn-full btn-switch">Ganti ke...</button>
+      </div>
+    `;
+    // attach event listeners (avoids onclick string escaping)
+    const [btnAdd, btnTg] = card.querySelectorAll('.actions .btn-full');
+    const btnSwitch = card.querySelector('.btn-switch');
+    btnAdd.addEventListener('click', ()=> addCart(name, price));
+    btnTg.addEventListener('click', ()=> quickTelegram(name, price));
+    btnSwitch.addEventListener('click', ()=> openSwitchModal(idx));
+    productList.appendChild(card);
+  });
+}
+renderCards();
+
+/* Utilities */
+function startMusicOnce(){ if(!musicStarted){ bgMusic.play().catch(()=>{}); musicStarted=true; } }
+function toggleMusic(){ bgMusic.paused? bgMusic.play(): bgMusic.pause(); }
+function toggleProducts(){ startMusicOnce(); const grid = document.getElementById('productList'); const btn = document.getElementById('toggleBtn'); if(listVisible){ grid.style.display='none'; btn.textContent='📦 Lihat List Panel'; } else{ grid.style.display='grid'; btn.textContent='❌ Tutup List Panel'; } listVisible = !listVisible; }
+
+/* CART logic */
+function addCart(name, price){
+  startMusicOnce();
+  if(cart.find(i=>i.name===name)){ alert('Item ini sudah ada di keranjang!'); return; }
+  cart.push({name,price});
+  showCart();
+}
+function removeCart(idx){ cart.splice(idx,1); showCart(); }
+function showCart(){
+  cartItemsEl.innerHTML = '';
+  cart.forEach((it, idx)=>{
+    const div = document.createElement('div');
+    div.className = 'cart-item';
+    div.innerHTML = `<div style="max-width:66%"><div class="name">${escapeHtml(it.name)}</div></div>
+      <div style="text-align:right"><div class="price">Rp ${it.price.toLocaleString('id-ID')}</div>
+      <button class="remove-btn" onclick="removeCart(${idx})">✖</button></div>`;
+    cartItemsEl.appendChild(div);
+  });
+  cartPopup.classList.toggle('show', cart.length>0);
+  cartPopup.setAttribute('aria-hidden', cart.length===0 ? 'true' : 'false');
+}
+function closeCart(){ cartPopup.classList.remove('show'); }
+
+/* SWITCH MODAL (modern grid) */
+function openSwitchModal(fromIdx){
+  switchingFromIndex = fromIdx; // index of the card user clicked "Ganti ke..."
+  // build switchList as grid of option cards
+  switchList.innerHTML = '';
+  panels.forEach((p, idx)=>{
+    const [name, ram, cpu, disk, price] = p;
+    const opt = document.createElement('div');
+    opt.className = 'switch-card';
+    opt.innerHTML = `<div><div class="switch-name">${name}</div><div class="switch-sub">${ram} • ${cpu} • ${disk}</div></div><div class="switch-price">Rp ${price.toLocaleString('id-ID')}</div>`;
+    opt.addEventListener('click', ()=> {
+      // remove any existing of the chosen name, ensure single per type
+      cart = cart.filter(i => i.name !== name);
+      // also remove original panel name (if present)
+      const originalName = panels[switchingFromIndex][0];
+      cart = cart.filter(i => !i.name.startsWith(originalName));
+      // add new selection (with nice detail)
+      cart.push({name: `${name} - ${ram} RAM / ${cpu} / ${disk} Disk`, price});
+      showCart();
+      closeSwitchModal();
+    });
+    switchList.appendChild(opt);
+  });
+  switchModal.classList.add('show');
+  switchModal.setAttribute('aria-hidden','false');
+  document.body.style.overflow = 'hidden';
+}
+function closeSwitchModal(){ switchModal.classList.remove('show'); switchModal.setAttribute('aria-hidden','true'); document.body.style.overflow = ''; }
+
+/* Checkout: WA */
+function checkoutCart(){
+  if(cart.length===0){ alert('Keranjang kosong!'); return; }
+  let msg = 'bang aku mau beli panel\n';
+  cart.forEach(i=> msg += `- ${i.name} Rp ${i.price.toLocaleString('id-ID')}\n`);
+  const num = '6285166370226';
+  window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`, '_blank');
+  cart = []; showCart();
+}
+
+/* Checkout: Telegram */
+function checkoutTelegram(){
+  if(cart.length===0){ alert('Keranjang kosong!'); return; }
+  let msg = 'bang aku mau beli panel\n';
+  cart.forEach(i=> msg += `- ${i.name} Rp ${i.price.toLocaleString('id-ID')}\n`);
+  const username = 'Regalsenpai';
+  window.open(`https://t.me/${username}?text=${encodeURIComponent(msg)}`, '_blank');
+  cart = []; showCart();
+}
+
+/* Quick Telegram per-card */
+function quickTelegram(name, price){
+  let msg = `bang aku mau beli panel - ${name} Rp ${price.toLocaleString('id-ID')}`;
+  const username = 'Regalsenpai';
+  window.open(`https://t.me/${username}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+function openTelegramQuick(){
+  const username = 'Regalsenpai';
+  const msg = 'halo, saya mau tanya tentang panel';
+  window.open(`https://t.me/${username}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+/* escape helper */
+function escapeHtml(str){ return String(str).replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
+
+/* init */
+document.addEventListener('DOMContentLoaded', ()=> {
+  document.getElementById('productList').style.display = 'none';
+});
+</script>
+</body>
+</html>
